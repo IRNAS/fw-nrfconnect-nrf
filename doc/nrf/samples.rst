@@ -8,12 +8,15 @@ Those samples are a good starting point for understanding how to put together yo
 
 In addition, the |NCS| provides the following samples that showcase the use of a single feature or library:
 
+.. _ble_samples:
+
 .. toctree::
    :maxdepth: 1
    :caption: Bluetooth samples:
    :glob:
 
    ../../samples/bluetooth/*/README
+   ../../samples/bluetooth/mesh/*/README
 
 .. note::
    |noBLE|

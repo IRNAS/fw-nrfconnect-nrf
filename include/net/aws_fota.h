@@ -18,19 +18,23 @@
  */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-enum aws_fota_evt_id {
-	/** AWS FOTA complete and status reported to job document */
-	AWS_FOTA_EVT_DONE,
-	/** AWS FOTA error */
-	AWS_FOTA_EVT_ERROR
-};
+    enum aws_fota_evt_id
+    {
+        /** AWS FOTA complete and status reported to job document */
+        AWS_FOTA_EVT_DONE,
+        /** AWS FOTA error */
+        AWS_FOTA_EVT_ERROR,
+        /*AWS FOTA started - added this*/
+        AWS_FOTA_EVT_START
+    };
 
-typedef void (*aws_fota_callback_t)(enum aws_fota_evt_id evt_id);
+    typedef void (*aws_fota_callback_t)(enum aws_fota_evt_id evt_id);
 
-/**@brief Initialize the AWS Firmware Over the Air library.
+    /**@brief Initialize the AWS Firmware Over the Air library.
  *
  * @param client       Pointer to an initialized MQTT instance.
  * @param app_version  Current version number of the application as a \0
@@ -42,11 +46,11 @@ typedef void (*aws_fota_callback_t)(enum aws_fota_evt_id evt_id);
  * @retval -EINVAL If any of the input values are invalid.
  * @return         Negative value on error.
  */
-int aws_fota_init(struct mqtt_client *const client,
-		  const char *app_version,
-		  aws_fota_callback_t evt_handler);
+    int aws_fota_init(struct mqtt_client *const client,
+                      const char *app_version,
+                      aws_fota_callback_t evt_handler);
 
-/**@brief AWS Firmware over the air mqtt event handler.
+    /**@brief AWS Firmware over the air mqtt event handler.
  *
  * @param client Pointer to the mqtt_client instance.
  * @param evt          Pointer to the recived mqtt_evt.
@@ -55,8 +59,8 @@ int aws_fota_init(struct mqtt_client *const client,
  * @retval 1 If successful and the application can skip handling this event.
  * @return   A negative value on error.
  */
-int aws_fota_mqtt_evt_handler(struct mqtt_client *const client,
-			      const struct mqtt_evt *evt);
+    int aws_fota_mqtt_evt_handler(struct mqtt_client *const client,
+                                  const struct mqtt_evt *evt);
 
 #ifdef __cplusplus
 }

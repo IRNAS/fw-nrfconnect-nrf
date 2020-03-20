@@ -82,6 +82,9 @@ static const char lock_bands[] = "AT%XBANDLOCK=2,\""CONFIG_LTE_LOCK_BAND_MASK
 /* Lock PLMN */
 static const char lock_plmn[] = "AT+COPS=1,2,\""
 				 CONFIG_LTE_LOCK_PLMN_STRING"\"";
+#elif defined(CONFIG_LTE_UNLOCK_PLMN)
+/* Unlock PLMN */
+static const char unlock_plmn[] = "AT+COPS=0";
 #endif
 /* Request eDRX to be disabled */
 static const char edrx_disable[] = "AT+CEDRXS=3";
@@ -97,6 +100,8 @@ static const char power_off[] = "AT+CFUN=0";
 static const char normal[] = "AT+CFUN=1";
 /* Set the modem to Offline mode */
 static const char offline[] = "AT+CFUN=4";
+
+static const char gps_mode[] = "AT%XSYSTEMMODE=0,0,1,0";
 
 #if defined(CONFIG_LTE_NETWORK_MODE_NBIOT)
 /* Preferred network mode: Narrowband-IoT */
@@ -186,10 +191,16 @@ static int w_lte_lc_init(void)
 	}
 #endif
 #if defined(CONFIG_LTE_LOCK_PLMN)
-	/* Set Operator (volatile setting).
+	/* Manually select Operator (volatile setting).
 	 * Has to be done every time before activating the modem.
 	 */
 	if (at_cmd_write(lock_plmn, NULL, 0, NULL) != 0) {
+		return -EIO;
+	}
+#elif defined(CONFIG_LTE_UNLOCK_PLMN)
+	/* Automatically select Operator (volatile setting).
+	 */
+	if (at_cmd_write(unlock_plmn, NULL, 0, NULL) != 0) {
 		return -EIO;
 	}
 #endif
@@ -832,6 +843,23 @@ clean_exit:
 	at_params_list_free(&resp_list);
 
 	return err;
+}
+
+int lte_lc_gps_nw_mode(void)
+{
+	if (at_cmd_write(offline, NULL, 0, NULL) != 0) {
+		return -EIO;
+	}
+
+	if (at_cmd_write(gps_mode, NULL, 0, NULL) != 0) {
+		return -EIO;
+	}
+
+	if (at_cmd_write(normal, NULL, 0, NULL) != 0) {
+		return -EIO;
+	}
+
+	return 0;
 }
 
 #if defined(CONFIG_LTE_AUTO_INIT_AND_CONNECT)

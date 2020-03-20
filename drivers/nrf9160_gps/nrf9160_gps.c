@@ -60,7 +60,6 @@ static struct gps_data fresh_pvt;
 
 static void copy_pvt(struct gps_pvt *dest, nrf_gnss_pvt_data_frame_t *src)
 {
-
 	dest->latitude = src->latitude;
 	dest->longitude = src->longitude;
 	dest->altitude = src->altitude;
@@ -80,8 +79,8 @@ static void copy_pvt(struct gps_pvt *dest, nrf_gnss_pvt_data_frame_t *src)
 	dest->vdop = src->vdop;
 	dest->tdop = src->tdop;
 
-	for (size_t i = 0;
-	     i < MIN(NRF_GNSS_MAX_SATELLITES, GPS_MAX_SATELLITES); i++) {
+	for (size_t i = 0; i < MIN(NRF_GNSS_MAX_SATELLITES, GPS_MAX_SATELLITES);
+	     i++) {
 		dest->sv[i].sv = src->sv[i].sv;
 		dest->sv[i].cn0 = src->sv[i].cn0;
 		dest->sv[i].elevation = src->sv[i].elevation;
@@ -93,8 +92,8 @@ static void copy_pvt(struct gps_pvt *dest, nrf_gnss_pvt_data_frame_t *src)
 
 static bool is_fix(struct gps_pvt *pvt)
 {
-	return ((pvt->flags & NRF_GNSS_PVT_FLAG_FIX_VALID_BIT)
-		== NRF_GNSS_PVT_FLAG_FIX_VALID_BIT);
+	return ((pvt->flags & NRF_GNSS_PVT_FLAG_FIX_VALID_BIT) ==
+		NRF_GNSS_PVT_FLAG_FIX_VALID_BIT);
 }
 
 /**@brief Checks if GPS operation is blocked due to insufficient time windows */
@@ -151,8 +150,8 @@ static void print_satellite_stats(nrf_gnss_data_frame_t *pvt_data)
 							n_used,
 							n_unhealthy);
 
-	LOG_DBG("Seconds since last fix %lld",
-			(k_uptime_get() - fix_timestamp) / 1000);
+	LOG_DBG("Seconds since last fix %d",
+		(s32_t)((k_uptime_get() - fix_timestamp) / 1000));
 }
 
 static void gps_thread(int dev_ptr)
@@ -167,7 +166,7 @@ wait:
 	k_sem_take(&drv_data->thread_run_sem, K_FOREVER);
 
 	while (true) {
-		len = recv(drv_data->socket, &raw_gps_data,
+		len = nrf_recv(drv_data->socket, &raw_gps_data,
 			       sizeof(nrf_gnss_data_frame_t), 0);
 		if (len <= 0) {
 			/* Is the GPS stopped, causing this error? */
@@ -207,8 +206,8 @@ wait:
 			print_satellite_stats(&raw_gps_data);
 			copy_pvt(&fresh_pvt.pvt, &raw_gps_data.pvt);
 
-			if ((drv_data->trigger.chan == GPS_CHAN_PVT)
-			   && (drv_data->trigger.type == GPS_TRIG_DATA_READY)) {
+			if ((drv_data->trigger.chan == GPS_CHAN_PVT) &&
+			    (drv_data->trigger.type == GPS_TRIG_DATA_READY)) {
 				trigger_send = true;
 				LOG_DBG("PVT data ready");
 			}
@@ -238,8 +237,8 @@ wait:
 				LOG_DBG("NMEA data ready");
 			}
 
-			if ((drv_data->trigger.type == GPS_TRIG_FIX)
-			    && is_fix(&fresh_pvt.pvt)) {
+			if ((drv_data->trigger.type == GPS_TRIG_FIX) &&
+			    is_fix(&fresh_pvt.pvt)) {
 				if (drv_data->trigger.chan == GPS_CHAN_NMEA) {
 					trigger_send = true;
 				}
@@ -274,8 +273,8 @@ static int init_thread(struct device *dev)
 	k_thread_create(&drv_data->thread, drv_data->thread_stack,
 			K_THREAD_STACK_SIZEOF(drv_data->thread_stack),
 			(k_thread_entry_t)gps_thread, dev, NULL, NULL,
-			K_PRIO_PREEMPT(CONFIG_NRF9160_GPS_THREAD_PRIORITY),
-			0, 0);
+			K_PRIO_PREEMPT(CONFIG_NRF9160_GPS_THREAD_PRIORITY), 0,
+			0);
 
 	return 0;
 }
@@ -284,8 +283,8 @@ static int init_thread(struct device *dev)
 static int enable_gps(struct device *dev)
 {
 	int err;
-	char buf[50] = {0};
-	struct at_param_list at_resp_list = {0};
+	char buf[50] = { 0 };
+	struct at_param_list at_resp_list = { 0 };
 	u16_t gps_param_value, functional_mode;
 
 	err = at_params_list_init(&at_resp_list, AT_XSYSTEMMODE_PARAMS_COUNT);
@@ -310,8 +309,7 @@ static int enable_gps(struct device *dev)
 		goto enable_gps_clean_exit;
 	}
 
-	err = at_params_short_get(&at_resp_list,
-				  AT_XSYSTEMMODE_GPS_PARAM_INDEX,
+	err = at_params_short_get(&at_resp_list, AT_XSYSTEMMODE_GPS_PARAM_INDEX,
 				  &gps_param_value);
 	if (err) {
 		LOG_ERR("Could not get GPS mode state, error: %d", err);
@@ -321,7 +319,7 @@ static int enable_gps(struct device *dev)
 	if (gps_param_value != 1) {
 		char cmd[sizeof(AT_XSYSTEMMODE_PROTO)];
 		size_t len;
-		u16_t values[AT_XSYSTEMMODE_PARAMS_COUNT] = {0};
+		u16_t values[AT_XSYSTEMMODE_PARAMS_COUNT] = { 0 };
 
 		LOG_DBG("GPS mode is not enabled, attempting to enable it");
 
@@ -508,9 +506,8 @@ static int init(struct device *dev)
 			return err;
 		}
 
-		LOG_DBG("MAGPIO set: %s",
-			log_strdup(CONFIG_NRF9160_GPS_MAGPIO_STRING));
-	#endif /* CONFIG_NRF9160_GPS_SET_MAGPIO */
+	LOG_DBG("MAGPIO set: %s", log_strdup(CONFIG_NRF9160_GPS_MAGPIO_STRING));
+#endif /* CONFIG_NRF9160_GPS_SET_MAGPIO */
 
 	#if CONFIG_NRF9160_GPS_SET_COEX0
 		err = at_cmd_write(CONFIG_NRF9160_GPS_COEX0_STRING,
@@ -538,7 +535,7 @@ static int channel_get(struct device *dev, enum gps_channel chan,
 	switch (chan) {
 	case GPS_CHAN_NMEA:
 		memcpy(sample->nmea.buf, fresh_nmea.nmea.buf,
-			fresh_nmea.nmea.len);
+		       fresh_nmea.nmea.len);
 		sample->nmea.len = fresh_nmea.nmea.len;
 		break;
 	case GPS_CHAN_PVT:
@@ -560,11 +557,8 @@ static int stop(struct device *dev)
 
 	atomic_set(&drv_data->gps_is_active, 0);
 
-	retval = nrf_setsockopt(drv_data->socket,
-				NRF_SOL_GNSS,
-				NRF_SO_GNSS_STOP,
-				NULL,
-				0);
+	retval = nrf_setsockopt(drv_data->socket, NRF_SOL_GNSS,
+				NRF_SO_GNSS_STOP, NULL, 0);
 
 	if (retval != 0) {
 		LOG_ERR("Failed to stop GPS");
@@ -574,9 +568,8 @@ static int stop(struct device *dev)
 	return 0;
 }
 
-static int trigger_set(struct device *dev,
-			       const struct gps_trigger *trig,
-			       gps_trigger_handler_t handler)
+static int trigger_set(struct device *dev, const struct gps_trigger *trig,
+		       gps_trigger_handler_t handler)
 {
 	int ret = 0;
 	struct gps_drv_data *drv_data = dev->driver_data;
@@ -601,13 +594,12 @@ static int trigger_set(struct device *dev,
 
 static struct gps_drv_data gps_drv_data;
 
-static const struct gps_driver_api gps_api_funcs = {
-	.sample_fetch = sample_fetch,
-	.channel_get = channel_get,
-	.trigger_set = trigger_set,
-	.start = start,
-	.stop = stop
-};
+static const struct gps_driver_api gps_api_funcs = { .sample_fetch =
+							     sample_fetch,
+						     .channel_get = channel_get,
+						     .trigger_set = trigger_set,
+						     .start = start,
+						     .stop = stop };
 
 DEVICE_AND_API_INIT(nrf9160_gps, CONFIG_NRF9160_GPS_DEV_NAME, init,
 		    &gps_drv_data, NULL, APPLICATION,

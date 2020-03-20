@@ -34,8 +34,6 @@
 
 .. ### Links to Nordic documentation
 
-.. _`nRF Connect SDK v1.1.0 documentation`: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.1.0/nrf/index.html
-
 .. _`nRF Connect SDK v1.0.0 documentation`: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.0.0/nrf/index.html
 
 .. _`nRF Connect SDK v0.4.0 documentation`: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/0.4.0/nrf/index.html
@@ -58,6 +56,8 @@
 
 .. _`system mode section in the AT Commands reference document`: https://infocenter.nordicsemi.com/topic/ref_at_commands/REF/at_commands/mob_termination_ctrl_status/xsystemmode.html
 
+.. _`nRF5340 Product Specification`: https://infocenter.nordicsemi.com/topic/ps_nrf5340/keyfeatures_html5.html
+
 
 
 .. ### Links to the Nordic website
@@ -72,7 +72,7 @@
 
 .. _`nRF9160 Certifications`: https://www.nordicsemi.com/Products/Low-power-Cellular-IoT/nRF9160-Certifications
 
-.. _`Nordic Thingy:52`: https://www.nordicsemi.com/Software-and-tools/Prototyping-platforms/Nordic-Thingy-52
+.. _`Nordic Thingy:52`: https://www.nordicsemi.com/Software-and-Tools/Development-Kits/Nordic-Thingy-52
 
 
 
@@ -95,6 +95,7 @@
 
 .. _`nRF Toolbox`: https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Toolbox
 
+.. _`nrfx`: https://github.com/NordicSemiconductor/nrfx/
 
 
 .. ### Links to other websites and software
@@ -110,6 +111,8 @@
 .. _`Semantic Versioning 2.0.0`: https://semver.org/
 
 .. _`nRF Cloud`: https://nrfcloud.com/
+
+.. _`firmware.nrfcloud.com`: https://firmware.nrfcloud.com/
 
 .. _`openSSL`: https://www.openssl.org/
 
@@ -149,6 +152,8 @@
 .. _`AWS S3 console`: https://console.aws.amazon.com/s3/home
 
 .. _`TLS`: https://www.ietf.org/rfc/rfc5246.txt
+
+.. _`OpenAMP`: https://github.com/OpenAMP/open-amp/
 
 
 .. ### Links to Bluetooth specs

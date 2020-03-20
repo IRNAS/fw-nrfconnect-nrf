@@ -55,6 +55,9 @@ static void bt_gatt_discover_work(struct k_work *work)
 	       mock_data->params->start_handle,
 	       mock_data->params->end_handle);
 
+	zassert_true(mock_data->params->start_handle < discover_mock_data.len,
+		"Unexpected start handle: %u", mock_data->params->start_handle);
+
 	for (attr_cur = discover_mock_data.attr;
 	     attr_cur < attr_end;
 	     ++attr_cur) {
@@ -87,7 +90,7 @@ static void bt_gatt_discover_work(struct k_work *work)
 				break;
 			}
 			continue; /* Skip */
-		case BT_GATT_DISCOVER_DESCRIPTOR:
+		case BT_GATT_DISCOVER_ATTRIBUTE:
 			break;
 		default:
 			zassert_unreachable(
