@@ -68,9 +68,9 @@ static const struct mqtt_topic cc_rx_list[] = {
      .qos = MQTT_QOS_1_AT_LEAST_ONCE},
     {.topic = {.utf8 = cfg_topic, .size = CFG_TOPIC_LEN},
      .qos = MQTT_QOS_1_AT_LEAST_ONCE},
-    {.topic = {.utf8 = update_delta_topic,
-               .size = UPDATE_DELTA_TOPIC_LEN},
-     .qos = MQTT_QOS_1_AT_LEAST_ONCE},
+    // {.topic = {.utf8 = update_delta_topic,
+    //            .size = UPDATE_DELTA_TOPIC_LEN},
+    //  .qos = MQTT_QOS_1_AT_LEAST_ONCE},
 };
 
 struct bifravst_cloud_tx_data
