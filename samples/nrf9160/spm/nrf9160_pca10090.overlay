@@ -14,3 +14,12 @@
 &pwm3 {
 	status = "okay";
 };
+
+&uart0 {
+	current-speed = <115200>;
+	status = "okay";
+	tx-pin = <29>;
+	rx-pin = <28>;
+	rts-pin = <0xFFFFFFFF>;
+	cts-pin = <0xFFFFFFFF>;
+};
