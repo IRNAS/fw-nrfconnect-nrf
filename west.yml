@@ -55,7 +55,7 @@ manifest:
       revision: 9d56815aa4abf99a6e96af6ed035968add4b8cab
     - name: mcuboot
       repo-path: sdk-mcuboot
-      revision: 891d18dc8e897292c78f9f1ae650e494770a8cd8
+      revision: 4ab011978c25929ba63ecb3f5f665eaa61fcf483
       remote: IRNAS
     - name: mcumgr
       repo-path: fw-nrfconnect-mcumgr
