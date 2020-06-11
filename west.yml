@@ -31,6 +31,8 @@ manifest:
       url-base: https://github.com/ARMmbed
     - name: civetweb
       url-base: https://github.com/civetweb
+    - name: IRNAS
+      url-base: https://github.com/IRNAS
 
   # The list of external projects for the nRF Connect SDK.
   #
@@ -52,8 +54,9 @@ manifest:
       path: modules/crypto/mbedtls
       revision: 9d56815aa4abf99a6e96af6ed035968add4b8cab
     - name: mcuboot
-      repo-path: fw-nrfconnect-mcuboot
+      repo-path: sdk-mcuboot
       revision: 891d18dc8e897292c78f9f1ae650e494770a8cd8
+      remote: IRNAS
     - name: mcumgr
       repo-path: fw-nrfconnect-mcumgr
       revision: f663988d35da559a37f263d369842dbce309d1fa
