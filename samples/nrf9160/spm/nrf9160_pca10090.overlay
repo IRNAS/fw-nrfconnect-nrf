@@ -23,13 +23,3 @@
 	rts-pin = <0xFFFFFFFF>;
 	cts-pin = <0xFFFFFFFF>;
 };
-
-
-&uart1 {
-	status = "okay";
-	current-speed = <115200>;
-	tx-pin = <27>;
-	rx-pin = <26>;
-	rts-pin = <0xFFFFFFFF>;
-	cts-pin = <0xFFFFFFFF>;
-};
